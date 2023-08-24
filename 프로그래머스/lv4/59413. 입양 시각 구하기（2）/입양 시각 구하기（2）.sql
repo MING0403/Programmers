@@ -1,0 +1,17 @@
+WITH RECURSIVE TIME AS (
+    SELECT 0 AS HOUR
+    UNION ALL
+    SELECT HOUR+1 FROM TIME
+    WHERE HOUR<23
+
+)
+
+
+-- 시간대별로 입양이 몇 건이나 발생했는지 조회(0시부터 23시)
+SELECT TIME.HOUR, COUNT(ANIMAL_ID) AS COUNT
+FROM ANIMAL_OUTS o RIGHT JOIN TIME 
+ON HOUR(o.DATETIME) = TIME.HOUR
+-- 몇 시에 입양이 가장 활발하게 일어나는지
+GROUP BY TIME.HOUR
+-- 결과는 시간대 순으로 정렬
+ORDER BY 1;
